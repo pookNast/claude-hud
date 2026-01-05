@@ -32,10 +32,9 @@ export function getContextPercent(stdin: StdinData): number {
     return 0;
   }
 
-  const totalTokens =
-    (usage.input_tokens ?? 0) +
-    (usage.cache_creation_input_tokens ?? 0) +
-    (usage.cache_read_input_tokens ?? 0);
+  // Only count input_tokens for context window usage
+  // cache_creation/read tokens are API billing metrics, not context usage
+  const totalTokens = usage.input_tokens ?? 0;
 
   return Math.min(100, Math.round(((totalTokens + AUTOCOMPACT_BUFFER) / size) * 100));
 }
